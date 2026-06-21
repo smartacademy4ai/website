@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* next-themes toggles a `.dark` class — bind Tailwind's dark: variant to it
+   (v4 defaults dark: to prefers-color-scheme, ignoring the class). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #15140f;
+  --surface: #f6f5f2;
+  --surface-2: #eceae4;
+  --border-color: rgba(20, 18, 12, 0.1);
+  --muted: #6b6862;
+  --card: #ffffff;
+  --card-border: rgba(20, 18, 12, 0.08);
+}
+
+.dark {
+  --background: #0d0d12;
+  --foreground: #ecebf2;
+  --surface: #16161d;
+  --surface-2: #1e1e27;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --muted: #9491a0;
+  --card: #15151c;
+  --card-border: rgba(255, 255, 255, 0.07);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border-color);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+
+  --color-violet: #8b7cf6;
+  --color-violet-light: #a99bf9;
+  --color-violet-dark: #6d5cd6;
+  --color-teal: #3aa99a;
+  --color-teal-light: #6fc9bc;
+  --color-teal-dark: #2a7d72;
+  --color-green: #4f9d6f;
+  --color-green-light: #6fb98a;
+  --color-neon: #2bff88;
+  --color-neon-dim: #1fdc74;
+
+  --font-heading: var(--font-bricolage), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+}
+
+::selection {
+  background: rgba(139, 124, 246, 0.28);
+  color: var(--foreground);
+}
+
+/* Solid violet panel — sober, no rainbow duotone */
+.gradient-violet-teal {
+  background: #6d5cd6;
+  background: linear-gradient(150deg, #6d5cd6 0%, #574bb0 100%);
+}
+
+/* Mono-hue emphasis — same family, no neon teal */
+.gradient-text {
+  color: var(--color-violet-dark);
+}
+
+.dark .gradient-text {
+  color: var(--color-violet-light);
+}
+
+/* Retired heavy grid — barely-there neutral dot field */
+.grid-bg {
+  background-image: radial-gradient(rgba(20, 18, 12, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.dark .grid-bg {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.glow-violet,
+.glow-teal {
+  box-shadow: none;
+}
+
+/* Opaque card — no glassmorphism blur */
+.card-glass {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+}
+
+.card-glass:hover {
+  border-color: rgba(139, 124, 246, 0.35);
+}
+
+/* Animated ambient background — drifting violet + neon-green orbs */
+@keyframes orb-drift-a {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.9; }
+  33%  { transform: translate(18vw, 10vh) scale(1.3); opacity: 1; }
+  66%  { transform: translate(6vw, 22vh) scale(1.05); opacity: 0.7; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.9; }
+}
+@keyframes orb-drift-b {
+  0%   { transform: translate(0, 0) scale(1.1); opacity: 1; }
+  50%  { transform: translate(-20vw, -14vh) scale(0.8); opacity: 0.6; }
+  100% { transform: translate(0, 0) scale(1.1); opacity: 1; }
+}
+@keyframes orb-drift-c {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.8; }
+  50%  { transform: translate(-16vw, -18vh) scale(1.4); opacity: 1; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+}
+@keyframes grid-pan {
+  0%   { background-position: 0 0; }
+  100% { background-position: 44px 44px; }
+}
+
+.anim-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.anim-bg__orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  will-change: transform;
+}
+.anim-bg__grid {
+  position: absolute;
+  inset: -2px;
+  background-image:
+    linear-gradient(rgba(139, 124, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(43, 255, 136, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  animation: grid-pan 14s linear infinite;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 80%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-bg__orb,
+  .anim-bg__grid {
+    animation: none !important;
+  }
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.3);
+  border-radius: 9999px;
+}
